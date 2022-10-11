@@ -1,6 +1,7 @@
 # -*-coding:UTF-8-*-
 import re
 import time
+import datetime
 import random
 import serial  # 導入serial庫
 # Reference: https://www.twblogs.net/a/5f04ab112f43ae5e2bb6d720?fbclid=IwAR2vjcQhtJKwRMsgHVXhXKf-3J-knV75XqKnrHqp0uwZPnNFFehbhoaHdpE
@@ -25,10 +26,10 @@ try:
         # print(f"dx:{dx}, dy:{dy}")
 
         if is_response_get:
-            print(f"Send Data....**{dx},{dy},**")
             data_in_string = f"{dx},{dy},".strip()
             data_to_be_send = data_in_string.encode(encoding='ASCII')
-            print(f"Write....**{data_to_be_send}**")
+            print(
+                f"[{datetime.datetime.now()}] Write:{data_to_be_send}")
             ser.write(data_to_be_send)
             ser.flush()
             time.sleep(0.1)
@@ -37,9 +38,9 @@ try:
         response = ser.readall()  # 用response讀取端口的返回值
         if response:
             is_response_get = True
-            print("Response:\n", response.decode('UTF8'))  # 進行打印
-        # time.sleep(0.5)
-        print()
+            # 進行打印
+            print(
+                f"[{datetime.datetime.now()}] Response:{response.decode('UTF8')}")
 except Exception as e:
     print("Stop Serial Transmittion, beacause of: ", e)
     ser.close()  # 拋出異常後關閉端口py

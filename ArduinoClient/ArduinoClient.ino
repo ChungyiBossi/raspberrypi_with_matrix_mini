@@ -18,18 +18,17 @@ void setup() {
 
 unsigned long messageTimestamp = 0;
 void loop() {
-  // }
-  delay(1000);
+  delay(800);
   if (Serial.available() > 0)//判斷串口緩存區有沒有數據
   {
-    delay(300);
+    delay(100);
     String string_data = Serial.readString(); // Read String from Serial port
     string_data.trim();
     // https://www.runoob.com/cprogramming/c-function-strcpy.html 
     // Copy string(convert to pointer) to char array. 
     // Be careful of destination array too small.
     strcpy(bias_data, string_data.c_str());      
-    Serial.print("Data:"); Serial.print(bias_data); Serial.print("|Len:"); Serial.print(strlen(bias_data)); Serial.println("|");
+    // Serial.print("Data:"); Serial.print(bias_data); Serial.print("|Len:"); Serial.print(strlen(bias_data)); Serial.println("|");
     if (strlen(bias_data) > 0)
     {    
       // Get first & second element.
@@ -37,7 +36,7 @@ void loop() {
       int index = 0;
       while (bias_data_token_ptr != NULL) {
         bias_angle[index % 2] = atof(bias_data_token_ptr);
-        Serial.print(index);Serial.print(":");Serial.println(atof(bias_data_token_ptr));
+        // Serial.print(index);Serial.print(":");Serial.println(atof(bias_data_token_ptr));
         bias_data_token_ptr = strtok(NULL, delim);
         index++;
       }
@@ -49,15 +48,12 @@ void loop() {
       Mini.RGB1.setRGB(0,255, 0);
       Mini.RGB2.setRGB(0,0,255);
       Serial.print("dX:"); Serial.print(bias_angle[0]); Serial.print(", dY:"); Serial.println(bias_angle[1]);
-      delay(1000);
     } 
     else
     {
       Mini.RGB1.setRGB(255,0,0);
       Mini.RGB2.setRGB(255,0,0);
-      delay(300);
     }
-
   } else {
     Serial.println("No Data In Serial.");
   }
